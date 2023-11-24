@@ -115,9 +115,12 @@ END
     pif = []
 
     for token_type, token_value, line_number in tokens:
-        if token_type == TOKEN_IDENTIFIER or token_type == TOKEN_INTCONST or token_type == TOKEN_CHARCONST or token_type == TOKEN_STRINGCONST :
+        if token_type == TOKEN_IDENTIFIER or token_type == TOKEN_INTCONST or token_type == TOKEN_CHARCONST or token_type == TOKEN_STRINGCONST:
             st_pos = st.insert(token_value, line_number)
-            pif.append((token_value, st_pos))
+            pif.append((token_type, token_value, st_pos))
+        else:
+            # For other types (operators, separators, reserved words), use -1 as ST_pos
+            pif.append((token_type, token_value, -1))
 
     # Output the Symbol Table
     with open("ST.out", "w") as st_out:
@@ -126,5 +129,5 @@ END
 
     # Output the Program Internal Form (PIF)
     with open("PIF.out", "w") as pif_out:
-        for token_value, st_pos in pif:
-            pif_out.write(f"Token: {token_value}, ST_pos: {st_pos}\n")
+        for token_type, token_value, st_pos in pif:
+            pif_out.write(f"Token Type: {token_type}, Token Value: {token_value}, ST_pos: {st_pos}\n")
